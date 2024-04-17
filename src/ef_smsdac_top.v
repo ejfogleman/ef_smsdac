@@ -60,7 +60,7 @@ module ef_smsdac_top ( clk, rst_b, d_in, d_out_3, d_out_2, d_out_1, d_out_0 );
   u_reg ef_smsdac_reg(
     .clk(clk), 
     .rst_b(rst_b), 
-    .d({d_sync[7],y_c,y6[1:0],y5[1:0],y4[1:0]), 
+    .d({d_sync[7],y_c,y6[1:0],y5[1:0],y4[1:0]}), 
     .q({d_out_3[1:0],d_out_2[1:0],d_out_1[1:0],d_out_0[1:0]});
 
 endmodule
