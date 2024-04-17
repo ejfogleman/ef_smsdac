@@ -13,7 +13,7 @@ module ef_smsdac_sync ( clk, rst_b, d, q );
   input  [7:0] d;
   output  [7:0] q;
   
-    reg [7:0] q0, 
+    reg [7:0] q0, q;
     
     always @( posedge clk, negedge rst_b ) begin
 
