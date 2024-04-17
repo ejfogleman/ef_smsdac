@@ -9,7 +9,7 @@
  */
  
 // Top level 
-module ef_smsdac_top ( clk, rst_b, d_in, d_out_3, d_out_2, d_out_1, d_out_0 );
+module ef_smsdac_top( clk, rst_b, d_in, d_out_3, d_out_2, d_out_1, d_out_0 );
 
   input clk;
   input rst_b;
@@ -27,14 +27,14 @@ module ef_smsdac_top ( clk, rst_b, d_in, d_out_3, d_out_2, d_out_1, d_out_0 );
   wire y_c;
 
   // input data sync reg
-  u_sync ef_smsdac_sync(
+  ef_smsdac_sync u_sync(
     .clk(clk), 
     .rst_b(rst_b), 
     .d(d_in), 
     .q(d_sync));  
 
   // mismatch-shaping encoder
-  u_dac ef_smsdac_mse(
+  ef_smsdac_mse u_dac(
     .clk(clk), 
     .rst_b(rst_b), 
     .x(d_sync), 
@@ -50,14 +50,14 @@ module ef_smsdac_top ( clk, rst_b, d_in, d_out_3, d_out_2, d_out_1, d_out_0 );
     .y_c(y_c));
 
   // lfsr for encoder dither
-  u_lfsr ef_smsdac_lfsr10_7(
+  ef_smsdac_lfsr10_7 u_lfsr(
     .clk(clk), 
     .rst_b(rst_b), 
     .en_dith(en_dith), 
     .r(r));
 
   // output retiming reg
-  u_reg ef_smsdac_reg(
+  ef_smsdac_reg u_reg(
     .clk(clk), 
     .rst_b(rst_b), 
     .d({d_sync[7],y_c,y6[1:0],y5[1:0],y4[1:0]}), 
