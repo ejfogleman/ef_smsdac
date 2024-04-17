@@ -23,7 +23,7 @@ module ef_smsdac_top( clk, rst_b, d_in, d_out_3, d_out_2, d_out_1, d_out_0 );
   wire en_dith = 1'b0;  // no control bit available right now
   wire x_c = 1'b0;  // no carry in
   wire [6:0] r;  // random dither bits
-  wire [1:0] y6, y5, y4, y3, y2, y1, y0;  // encoder outputs; only y6...y4 used
+  wire [1:0] y6, y5, y4;  // encoder outputs
   wire y_c;
 
   // input data sync reg

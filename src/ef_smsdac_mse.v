@@ -27,10 +27,12 @@ module ef_smsdac_mse ( clk, rst_b, x, x_c, r, y6, y5, y4, y_c );
 	wire  [1:0] y6;
 	wire  [1:0] y5;
 	wire  [1:0] y4;
+    /* verilator lint_off UNUSEDSIGNAL */
 	wire  [1:0] y3;
 	wire  [1:0] y2;
 	wire  [1:0] y1;
 	wire  [1:0] y0;
+    /* verilator lint_on UNUSEDSIGNAL */
 
 	ef_smsdac_mse_sb u_s0( .x0(x[0]), 
 						.x_c(x_c), 
