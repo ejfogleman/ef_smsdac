@@ -43,10 +43,6 @@ module ef_smsdac_top( clk, rst_b, d_in, d_out_3, d_out_2, d_out_1, d_out_0 );
     .y6(y6), 
     .y5(y5), 
     .y4(y4), 
-    .y3(y3), // n/c
-    .y2(y2), // n/c
-    .y1(y1), // n/c
-    .y0(y0), // n/c
     .y_c(y_c));
 
   // lfsr for encoder dither

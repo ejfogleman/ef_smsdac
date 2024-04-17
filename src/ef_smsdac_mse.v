@@ -11,7 +11,7 @@
  * 128x DAC driven by x7, y_c
  */
  
-module ef_smsdac_mse ( clk, rst_b, x, x_c, r, y6, y5, y4, y3, y2, y1, y0, y_c );
+module ef_smsdac_mse ( clk, rst_b, x, x_c, r, y6, y5, y4, y_c );
 
   input clk;
   input rst_b;
@@ -20,16 +20,17 @@ module ef_smsdac_mse ( clk, rst_b, x, x_c, r, y6, y5, y4, y3, y2, y1, y0, y_c );
   input  [6:0] r;
   output  [1:0] y6;
   output  [1:0] y5;
-  output  [1:0] y4;
-  output  [1:0] y3;
-  output  [1:0] y2;
-  output  [1:0] y1;
-  output  [1:0] y0;
+  output  [1:0] y4;  // drop unused y3...y0 from port list for now
   output y_c;
 
 	wire y_c_0, y_c_1, y_c_2, y_c_3, y_c_4, y_c_5, y_c;
-
-// module ef_smsdac_mse_sb ( clk, rst_b, r, x0, x_c, y0, y1, y_c );
+	wire  [1:0] y6;
+	wire  [1:0] y5;
+	wire  [1:0] y4;
+	wire  [1:0] y3;
+	wire  [1:0] y2;
+	wire  [1:0] y1;
+	wire  [1:0] y0;
 
 	ef_smsdac_mse_sb u_s0( .x0(x[0]), 
 						.x_c(x_c), 
