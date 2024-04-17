@@ -10,7 +10,7 @@
  * uio currently unused (create SPI data interface in future)
  */
 
-`define default_nettype none
+`default_nettype none
 
 module tt_um_ejfogleman_smsdac (
     input  wire [7:0] ui_in,    // Dedicated inputs
