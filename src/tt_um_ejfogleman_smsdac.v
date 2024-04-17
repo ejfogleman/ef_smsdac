@@ -27,7 +27,7 @@ module tt_um_ejfogleman_smsdac (
   assign uio_out = 0;
   assign uio_oe  = 0;
 
-  ef_smsdac_top ef_smsdac_top( 
+  ef_smsdac_top_0 ef_smsdac_top( 
     .clk(clk), 
     .rst_b(rst_n), 
     .d_in(ui_in[7:0]), 
