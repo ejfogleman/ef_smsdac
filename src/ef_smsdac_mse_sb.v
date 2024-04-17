@@ -10,7 +10,7 @@
 
 module ef_smsdac_mse_sb ( clk, rst_b, r, x0, x_c, y0, y1, y_c );
 
-  input clk, rst_b, r, x0, x_c, r; 
+  input clk, rst_b, r, x0, x_c; 
   output y0, y1, y_c;
 
 	reg q, q0;
