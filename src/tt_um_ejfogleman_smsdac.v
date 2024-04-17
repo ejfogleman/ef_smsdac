@@ -17,12 +17,12 @@ module tt_um_ejfogleman_smsdac (
     output wire [7:0] uo_out,   // Dedicated outputs
     /* verilator lint_off UNUSEDSIGNAL */
     input  wire [7:0] uio_in,   // IOs: Input path
-    /* verilator lint_on */
+    /* verilator lint_on UNUSEDSIGNAL */
     output wire [7:0] uio_out,  // IOs: Output path
     output wire [7:0] uio_oe,   // IOs: Enable path (active high: 0=input, 1=output)
     /* verilator lint_off UNUSEDSIGNAL */
     input  wire       ena,      // will go high when the design is enabled
-    /* verilator lint_on */
+    /* verilator lint_on UNUSEDSIGNAL */
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
     );
