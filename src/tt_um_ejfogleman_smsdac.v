@@ -1,3 +1,5 @@
+`default_nettype none
+
 /*
  * Copyright (c) 2024 Eric Fogleman
  * SPDX-License-Identifier: Apache-2.0
@@ -9,8 +11,6 @@
  * uo_out[7:0] connect to {8x, 4x, 2x, 1x} weight 3-level DACs
  * uio currently unused (create SPI data interface in future)
  */
-
-`default_nettype none
 
 module tt_um_ejfogleman_smsdac (
     input  wire [7:0] ui_in,    // Dedicated inputs
@@ -27,7 +27,7 @@ module tt_um_ejfogleman_smsdac (
   assign uio_out = 0;
   assign uio_oe  = 0;
 
-  u_dac_top ef_smsdac_top( 
+  ef_smsdac_top ef_smsdac_top( 
     .clk(clk), 
     .rst_b(rst_n), 
     .d_in(ui_in[7:0]), 
