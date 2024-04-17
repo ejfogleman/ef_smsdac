@@ -37,7 +37,7 @@ module ef_smsdac_top( clk, rst_b, d_in, d_out_3, d_out_2, d_out_1, d_out_0 );
   ef_smsdac_mse u_dac(
     .clk(clk), 
     .rst_b(rst_b), 
-    .x(d_sync), 
+    .x(d_sync[6:0]), 
     .x_c(x_c), 
     .r(r), 
     .y6(y6), 
