@@ -9,10 +9,12 @@
  */
  
 // Top level 
-module ef_smsdac_top( clk, rst_b, d_in, d_out_3, d_out_2, d_out_1, d_out_0 );
+module ef_smsdac_top( clk, rst_b, en_enc, en_dith, d_in, d_out_3, d_out_2, d_out_1, d_out_0 );
 
   input clk;
   input rst_b;
+  input en_enc;
+  input en_dith;
   input  [7:0] d_in;
   output  [1:0] d_out_3;
   output  [1:0] d_out_2;
@@ -20,11 +22,9 @@ module ef_smsdac_top( clk, rst_b, d_in, d_out_3, d_out_2, d_out_1, d_out_0 );
   output  [1:0] d_out_0;
 
   wire [7:0] d_sync; // input data after clock syncrhonizer
-  wire en_dith = 1'b0;  // no control bit available right now
   wire x_c = 1'b0;  // no carry in
   wire [6:0] r;  // random dither bits
-  wire [1:0] y6, y5, y4;  // encoder outputs
-  wire y_c;
+  wire [1:0] y7, y6, y5, y4;  // encoder outputs
 
   // input data sync reg
   ef_smsdac_sync u_sync(
@@ -37,26 +37,27 @@ module ef_smsdac_top( clk, rst_b, d_in, d_out_3, d_out_2, d_out_1, d_out_0 );
   ef_smsdac_mse u_dac(
     .clk(clk), 
     .rst_b(rst_b), 
-    .x(d_sync[6:0]), 
+    .en(en_enc),
+    .x(d_sync), 
     .x_c(x_c), 
     .r(r), 
+    .y7(y7),
     .y6(y6), 
     .y5(y5), 
-    .y4(y4), 
-    .y_c(y_c));
+    .y4(y4));
 
   // lfsr for encoder dither
   ef_smsdac_lfsr10_7 u_lfsr(
     .clk(clk), 
     .rst_b(rst_b), 
-    .en_dith(en_dith), 
+    .en(en_dith), 
     .r(r));
-
+  
   // output retiming reg
   ef_smsdac_reg u_reg(
     .clk(clk), 
     .rst_b(rst_b), 
-    .d({d_sync[7],y_c,y6[1:0],y5[1:0],y4[1:0]}), 
+    .d({y7[1:0],y6[1:0],y5[1:0],y4[1:0]}), 
     .q({d_out_3[1:0],d_out_2[1:0],d_out_1[1:0],d_out_0[1:0]}));
 
 endmodule

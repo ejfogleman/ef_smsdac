@@ -16,16 +16,15 @@ module ef_smsdac_sync ( clk, rst_b, d, q );
     reg [7:0] q0, q;
     
     always @( posedge clk, negedge rst_b ) begin
-
-        if ( rst_b == 1'b0 ) begin
-            q0 <= 0;
-		    q <= 0;
-		end
-		// 2 stage sync flop
-		else begin
-			q0 <= d;	
-			q <= q0;
-		end
-	end
+      if ( rst_b == 1'b0 ) begin
+          q0 <= 0;
+          q <= 0;
+      end
+      // 2 stage sync flop
+      else begin
+        q0 <= d;	
+        q <= q0;
+      end
+    end
 
 endmodule

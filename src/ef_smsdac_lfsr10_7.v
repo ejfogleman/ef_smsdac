@@ -6,11 +6,11 @@
  * updates 5 states at a time to avoid correlation in tapped bits
  */
 
-module ef_smsdac_lfsr10_7 ( clk, rst_b, en_dith, r );
+module ef_smsdac_lfsr10_7 ( clk, rst_b, en, r );
 
   input clk;
   input rst_b;
-  input en_dith;
+  input en;
   output  [6:0] r;
 
 	reg [9:0] q;
@@ -25,7 +25,7 @@ module ef_smsdac_lfsr10_7 ( clk, rst_b, en_dith, r );
 			q[0] <= 1'b1;
 		end
 		else begin
-			if ( en_dith ) begin
+			if ( en ) begin
 				// jumps 5 states per clock
 				// columnwise from left to right
 				q[9:5] <= q[4:0] ^ q[7:3];

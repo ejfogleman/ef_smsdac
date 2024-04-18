@@ -15,25 +15,28 @@
 module tt_um_ejfogleman_smsdac (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
-    /* verilator lint_off UNUSEDSIGNAL */
     input  wire [7:0] uio_in,   // IOs: Input path
-    /* verilator lint_on UNUSEDSIGNAL */
     output wire [7:0] uio_out,  // IOs: Output path
     output wire [7:0] uio_oe,   // IOs: Enable path (active high: 0=input, 1=output)
-    /* verilator lint_off UNUSEDSIGNAL */
     input  wire       ena,      // will go high when the design is enabled
-    /* verilator lint_on UNUSEDSIGNAL */
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
     );
 
-  // uio currently unused.
-  assign uio_out = 0;
-  assign uio_oe  = 0;
+  // uio[6:2] currently unused.
+  assign uio_out[6:0] = 0;
+  assign uio_oe[6:0] = 0;
+  assign uio_oe[7]  = 0;  // enable msb to monitor enable
+  assign uio_out[7] = ena_and_rst_n;
+
+  // release reset when project enabled
+  wire ena_and_rst_n = ena & rst_n;
 
   ef_smsdac_top u_top( 
     .clk(clk), 
-    .rst_b(rst_n), 
+    .rst_b(ena_and_rst_n), 
+    .en_enc(uio_in[0]),
+    .en_dith(uio_in[1]),
     .d_in(ui_in[7:0]), 
     .d_out_3(uo_out[7:6]), 
     .d_out_2(uo_out[5:4]), 

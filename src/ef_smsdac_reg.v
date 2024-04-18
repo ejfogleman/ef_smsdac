@@ -6,7 +6,7 @@
  * retime all DAC outputs to posedge clk
  */
  
-module ef_smsdac_reg ( clk, rst_b, d, q );
+module ef_smsdac_reg( clk, rst_b, d, q );
 
   input clk;
   input rst_b;
