@@ -27,8 +27,4 @@ The encoder has four modes of operation determined by `uio_in[1:0]`:
 
 Technically, this is a mismatch shaping DAC encoder.  For a high-performance DAC, it is best to use a precision reference voltage and a clean clock source for edge retiming.  However, it is possible to connect the encoder directly to a resistor ladder.  In this case, the digital IO supply acts as the DAC's reference voltage, and timing skews between the `uo_out` bits may impact performance.  
 
-An external resistor ladder is required to create the analog output voltage, and a capacitor is required to filter high-frequency noise.  The termination resistors are placed at the ends of the ladder to ensure that each section has nominally identical load resistance.  
-
-![External Resistor Ladder and Filtering](./docs/r-ladder.png)
-
-The suggested unit R value is 10 kOhm.  The equivalent output resistance of the network at __v_out__ is 10 kOhm.  A 680 pF output capacitor provides a 23 kHz lowpass corner.  With this choice of R, the minimum load resistance on each `uo_out` pin is 60 kOhm, and the driver will source a maximum of 55 uA at 3.3 V.
+An external resistor ladder is required to create the analog output voltage, and a capacitor is required to filter high-frequency noise.  The suggested unit R value is 10 kOhm.  The equivalent output resistance of the network at __v_out__ is 10 kOhm.  A 680 pF output capacitor provides a 23 kHz lowpass corner.  With this choice of R, the minimum load resistance on each `uo_out` pin is 60 kOhm, and the driver will source a maximum of 55 uA at 3.3 V.
