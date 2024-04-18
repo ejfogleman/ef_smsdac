@@ -37,6 +37,4 @@ Technically, this is a mismatch shaping DAC encoder.  For a high-performance DAC
 
 An external resistor ladder is required to create the analog output voltage, and a capacitor is required to filter high-frequency noise.  The termination resistors are placed at the ends of the ladder to ensure that each section has nominally identical load resistance.  
 
-![External Resistor Ladder and Filtering](./r-ladder.png)
-
 The suggested unit R value is 10 kOhm.  The equivalent output resistance of the network at __v_out__ is 10 kOhm.  A 680 pF output capacitor provides a 23 kHz lowpass corner.  With this choice of R, the minimum load resistance on each `uo_out` pin is 60 kOhm, and the driver will source a maximum of 55 uA at 3.3 V.
