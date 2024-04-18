@@ -1,41 +1,36 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg)
 
-# Tiny Tapeout Verilog Project Template
+# 8-bit DEM R2R DAC
 
-- [Read the documentation for project](docs/info.md)
 
-## What is Tiny Tapeout?
+## Description
 
-TinyTapeout is an educational project that aims to make it easier and cheaper than ever to get your digital designs manufactured on a real chip.
+This design implements a linear 8-bit DAC suitable for dc and low-frequency inputs.  An analog voltage is produced by connecting the encoder's outputs to a modified R-2R ladder on the PCB (see External Hardware).  It achieves high-linearity by using segmented mismatch-shaping, so the DAC does not require matched resistors.  The encoder provides 1st order mismatch and quantization noise shaping.  With a clock frequency of 6.144 MHz and a lowpass filter corner of 24 kHz, the oversampling ratio (OSR) is 256.
 
-To learn more and get started, visit https://tinytapeout.com.
+Error due to resistor mismatch appears at the output as 1st-order highpass shaped noise.  The encoder also reduces the bit-width from 8-bits, and quantization error is also 1st-order highpass shaped.  Thus, with passive filtering, a linear, low-noise dc output can be achieved.  The theory behind this encoder is described in: [A. Fishov, E. Fogleman, E. Siragusa, I. Galton, "Segmented Mismatch-Shaping D/A Conversion", IEEE International Symposium on Circuits and Systems (ISCAS), 2002](https://https://ieeexplore.ieee.org/document/1010547/)
 
-## Verilog Projects
+## Operation
+DAC input data is provided through `ui_in[7:0]`, and the encoder uses the project clock for mismatch shaping.  Clock frequencies in the range of 1-10 MHz are reasonable.  Higher clock frequency increases the OSR but may increase glitch error.  The encoder output is `uo_out[7:0]`, and it can be reconstructed by summing the bits with the following weights: 
 
-1. Add your Verilog files to the `src` folder.
-2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `source_files` and `top_module` properties. If you are upgrading an existing Tiny Tapeout project, check out our [online info.yaml migration tool](https://tinytapeout.github.io/tt-yaml-upgrade-tool/).
-3. Edit [docs/info.md](docs/info.md) and add a description of your project.
-4. Optionally, add a testbench to the `test` folder. See [test/README.md](test/README.md) for more information.
+    out = 8*uo_out[7]+uo_out[6]) + 4*(uo_out[5]+uo_out[4]) + 2*uo_out[3]+uo_out[2]) + uo_out[1]+uo_out[0]
 
-The GitHub action will automatically build the ASIC files using [OpenLane](https://www.zerotoasiccourse.com/terminology/openlane/).
+The resistor ladder shown below sums the outputs with this weighting.  Any output network that can create this weighting will work.  
 
-## Enable GitHub actions to build the results page
+The DAC is free-running off the project clock, and inputs appear at the output immediately after passing through a pair of clock sync registers.  A simple dc test can be performed using the input DIP switches and the resistor ladder.  It is possible to input dynamic waveforms from the microcontroller as well. 
 
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
+The encoder has four modes of operation determined by `uio_in[1:0]`:
+* 3:  1st order mismatch-shaping with dither
+* 2:  randomization (flat spectral shaping)
+* 1:  1st order shaping, no dither
+* 0:  static encoding (no linearization)
 
-## Resources
+## External Hardware
+## External hardware
 
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://docs.google.com/document/d/1aUUZ1jthRpg4QURIIyzlOaPWlmQzr-jBn3wZipVUPt4)
+Technically, this is a mismatch shaping DAC encoder.  For a high-performance DAC, it is best to use a precision reference voltage and a clean clock source for edge retiming.  However, it is possible to connect the encoder directly to a resistor ladder.  In this case, the digital IO supply acts as the DAC's reference voltage, and timing skews between the `uo_out` bits may impact performance.  
 
-## What next?
+An external resistor ladder is required to create the analog output voltage, and a capacitor is required to filter high-frequency noise.  The termination resistors are placed at the ends of the ladder to ensure that each section has nominally identical load resistance.  
 
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@matthewvenn](https://twitter.com/matthewvenn)
+![External Resistor Ladder and Filtering](./docs/r-ladder.png)
+
+The suggested unit R value is 10 kOhm.  The equivalent output resistance of the network at __v_out__ is 10 kOhm.  A 680 pF output capacitor provides a 23 kHz lowpass corner.  With this choice of R, the minimum load resistance on each `uo_out` pin is 60 kOhm, and the driver will source a maximum of 55 uA at 3.3 V.
