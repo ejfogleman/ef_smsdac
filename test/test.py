@@ -13,33 +13,28 @@ async def test_project(dut):
   clock = Clock(dut.clk, 1, units="us")
   cocotb.start_soon(clock.start())
 
-  # Reset
-  dut._log.info("Reset")
-  dut.ena.value = 1
-  dut.ui_in.value = 0
-  dut.uio_in.value = 0
-  dut.rst_n.value = 0
-  await ClockCycles(dut.clk, 10)
-  dut.rst_n.value = 1
+  for mode in range(4):
+    # Reset
+    dut._log.info(f"Reset / Mode = {mode}")
+    dut.ena.value = 1
+    dut.ui_in.value = 0
+    dut.uio_in.value = mode   #  uio_in[1:0] = {dith_en,enc_en}; 0: static, 1: 1st-order, 2: whitening, 3: dithered 1st-order
+    dut.rst_n.value = 0
+    await ClockCycles(dut.clk, 10)
+    dut.rst_n.value = 1
 
-  # Set the input values, wait one clock cycle, and check the output
+    # apply input code and check after 4 cycles
+    dut._log.info("Check number conservation")
+    in_val = 0x10;
+    for ix in range(0xF):
+      dut.ui_in.value = in_val  
+      await ClockCycles(dut.clk, 4)
+      dut._log.info(f"Input = {dut.ui_in.value}, Output = {dut.uo_out.value}, DAC Output = {dut.dac_v.value}")
+      assert dut.ui_in.value // 16 + 7 == dut.dac_v.value  # test number conservation
+      assert dut.uio_out.value == 0x80  # check ena_and_rst_n is high
+      in_val += 0x10  
+    
 
-  # apply input of 112 (0x70) and check after 3, 4 cycles
-  dut._log.info("Test")
-  dut.ui_in.value = 112  # 0x70 just below midscale input
-  dut.uio_in.value = 0
 
-  await ClockCycles(dut.clk, 3)
-  dut._log.info("Clock cycle 3") 
-  dut._log.info(f"Input = {dut.ui_in.value}")
-  dut._log.info(f"Output = {dut.uo_out.value}")
-  # assert dut.uo_out.value == 63   # 0x3F on cycle 3
-
-  await ClockCycles(dut.clk, 1)
-  dut._log.info("Clock cycle 4") 
-  dut._log.info(f"Input = {dut.ui_in.value}")
-  dut._log.info(f"Output = {dut.uo_out.value}")
-
-  # assert dut.uo_out.value == 84   # 0x54 on cycle 4
-
+  
 

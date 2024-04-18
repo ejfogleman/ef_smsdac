@@ -23,6 +23,9 @@ module tb ();
   wire [7:0] uio_out;
   wire [7:0] uio_oe;
 
+  // compute dac_v
+  wire [7:0] dac_v = 8*(uo_out[7]+uo_out[6]) + 4*(uo_out[5]+uo_out[4]) + 2*(uo_out[3]+uo_out[2]) + uo_out[1]+uo_out[0];
+
   // Replace tt_um_example with your module name:
   tt_um_ejfogleman_smsdac dut(
 
