@@ -2,12 +2,15 @@
 
 # 8-bit DEM R2R DAC
 
+---
 
 ## Description
 
 This design implements a linear 8-bit DAC suitable for dc and low-frequency inputs.  An analog voltage is produced by connecting the encoder's outputs to a modified R-2R ladder on the PCB (see External Hardware).  It achieves high-linearity by using segmented mismatch-shaping, so the DAC does not require matched resistors.  The encoder provides 1st order mismatch and quantization noise shaping.  With a clock frequency of 6.144 MHz and a lowpass filter corner of 24 kHz, the oversampling ratio (OSR) is 256.
 
 Error due to resistor mismatch appears at the output as 1st-order highpass shaped noise.  The encoder also reduces the bit-width from 8-bits, and quantization error is also 1st-order highpass shaped.  Thus, with passive filtering, a linear, low-noise dc output can be achieved.  The theory behind this encoder is described in: [A. Fishov, E. Fogleman, E. Siragusa, I. Galton, "Segmented Mismatch-Shaping D/A Conversion", IEEE International Symposium on Circuits and Systems (ISCAS), 2002](https://https://ieeexplore.ieee.org/document/1010547/)
+
+---
 
 ## Operation
 DAC input data is provided through `ui_in[7:0]`, and the encoder uses the project clock for mismatch shaping.  Clock frequencies in the range of 1-10 MHz are reasonable.  Higher clock frequency increases the OSR but may increase glitch error.  The encoder output is `uo_out[7:0]`, and it can be reconstructed by summing the bits with the following weights: 
@@ -24,8 +27,9 @@ The encoder has four modes of operation determined by `uio_in[1:0]`:
 * 1:  1st order shaping, no dither
 * 0:  static encoding (no linearization)
 
+---
+
 ## External Hardware
-## External hardware
 
 Technically, this is a mismatch shaping DAC encoder.  For a high-performance DAC, it is best to use a precision reference voltage and a clean clock source for edge retiming.  However, it is possible to connect the encoder directly to a resistor ladder.  In this case, the digital IO supply acts as the DAC's reference voltage, and timing skews between the `uo_out` bits may impact performance.  
 
