@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2024 Eric Fogleman
- * SPDX-License-Identifier: Apache-2.0
+ * SPDX-License-Identifier: GPL-2.0-or-later
  *
  * Segmented mismatch-shaping DAC top-level wrapper
  * Input clock at 1-50 MHz
