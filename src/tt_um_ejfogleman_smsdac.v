@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2024 Eric Fogleman
- * SPDX-License-Identifier: Apache-2.0
+ * SPDX-License-Identifier: GPL-2.0-or-later
  *
  * TT project wrapper for ef_smsdac
  * 1-10 MHz Segmented mismatch-shaping DAC 
