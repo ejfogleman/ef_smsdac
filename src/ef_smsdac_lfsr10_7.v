@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2024 Eric Fogleman
- * SPDX-License-Identifier: Apache-2.0
+ * SPDX-License-Identifier: GPL-2.0-or-later
  *
  * 10-b LFSR w/ 7 tapped outputs
  * updates 5 states at a time to avoid correlation in tapped bits
